@@ -1,8 +1,8 @@
 {
   "functions": {
-    "api/init-upload.js": {
-      "memory": 128,
-      "maxDuration": 10
+    "api/upload.js": {
+      "memory": 256,
+      "maxDuration": 60
     }
   }
 }

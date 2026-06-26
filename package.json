@@ -5,6 +5,9 @@
   "scripts": {
     "get-token": "node scripts/get-refresh-token.js"
   },
+  "engines": {
+    "node": ">=18"
+  },
   "dependencies": {
     "googleapis": "^144.0.0"
   }

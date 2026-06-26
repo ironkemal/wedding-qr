@@ -26,26 +26,10 @@
       box-shadow: 0 4px 24px rgba(0,0,0,0.08);
     }
 
-    h1 {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #1a1a1a;
-      margin-bottom: 0.25rem;
-    }
+    h1 { font-size: 1.4rem; font-weight: 700; color: #1a1a1a; margin-bottom: 0.25rem; }
+    .subtitle { font-size: 0.9rem; color: #888; margin-bottom: 1.75rem; }
 
-    .subtitle {
-      font-size: 0.9rem;
-      color: #888;
-      margin-bottom: 1.75rem;
-    }
-
-    label {
-      display: block;
-      font-size: 0.85rem;
-      font-weight: 600;
-      color: #444;
-      margin-bottom: 0.4rem;
-    }
+    label { display: block; font-size: 0.85rem; font-weight: 600; color: #444; margin-bottom: 0.4rem; }
 
     input[type="text"] {
       width: 100%;
@@ -58,7 +42,6 @@
       transition: border-color 0.2s;
       margin-bottom: 1.25rem;
     }
-
     input[type="text"]:focus { border-color: #c9a96e; }
 
     .file-area {
@@ -71,31 +54,13 @@
       margin-bottom: 1.25rem;
       position: relative;
     }
-
     .file-area:hover, .file-area.active { border-color: #c9a96e; background: #fdf3e3; }
-
     .file-area input[type="file"] {
-      position: absolute;
-      inset: 0;
-      opacity: 0;
-      cursor: pointer;
-      width: 100%;
-      height: 100%;
+      position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
     }
-
     .file-icon { font-size: 2rem; margin-bottom: 0.5rem; }
-
-    .file-hint {
-      font-size: 0.85rem;
-      color: #999;
-    }
-
-    .file-count {
-      font-size: 0.9rem;
-      font-weight: 600;
-      color: #c9a96e;
-      margin-top: 0.4rem;
-    }
+    .file-hint { font-size: 0.85rem; color: #999; }
+    .file-count { font-size: 0.9rem; font-weight: 600; color: #c9a96e; margin-top: 0.4rem; }
 
     button {
       width: 100%;
@@ -109,48 +74,21 @@
       cursor: pointer;
       transition: background 0.2s, opacity 0.2s;
     }
-
     button:hover:not(:disabled) { background: #b8924f; }
     button:disabled { opacity: 0.5; cursor: not-allowed; }
 
-    .progress-wrap {
-      margin-top: 1.25rem;
-      display: none;
-    }
-
+    .progress-wrap { margin-top: 1.25rem; display: none; }
     .progress-label {
-      display: flex;
-      justify-content: space-between;
-      font-size: 0.8rem;
-      color: #666;
-      margin-bottom: 0.4rem;
+      display: flex; justify-content: space-between;
+      font-size: 0.8rem; color: #666; margin-bottom: 0.4rem;
     }
-
-    .progress-bar-bg {
-      background: #f0e8dc;
-      border-radius: 999px;
-      height: 10px;
-      overflow: hidden;
-    }
-
-    .progress-bar {
-      height: 100%;
-      background: #c9a96e;
-      border-radius: 999px;
-      width: 0%;
-      transition: width 0.15s;
-    }
+    .progress-bar-bg { background: #f0e8dc; border-radius: 999px; height: 10px; overflow: hidden; }
+    .progress-bar { height: 100%; background: #c9a96e; border-radius: 999px; width: 0%; transition: width 0.2s; }
 
     .status {
-      margin-top: 1.25rem;
-      padding: 0.9rem 1rem;
-      border-radius: 0.75rem;
-      font-size: 0.9rem;
-      font-weight: 600;
-      text-align: center;
-      display: none;
+      margin-top: 1.25rem; padding: 0.9rem 1rem; border-radius: 0.75rem;
+      font-size: 0.9rem; font-weight: 600; text-align: center; display: none;
     }
-
     .status.success { background: #e8f5e9; color: #2e7d32; }
     .status.error   { background: #fdecea; color: #c62828; }
   </style>
@@ -165,7 +103,7 @@
 
   <label>Fotoğraf / Video</label>
   <div class="file-area" id="fileArea">
-    <input type="file" id="fileInput" accept="image/*,video/*" multiple capture="environment" />
+    <input type="file" id="fileInput" accept="image/*,video/*" multiple />
     <div class="file-icon">🖼️</div>
     <div class="file-hint">Buraya dokunarak fotoğraf veya video seç<br><small>Birden fazla seçebilirsiniz</small></div>
     <div class="file-count" id="fileCount"></div>
@@ -187,26 +125,29 @@
 </div>
 
 <script>
-  const nameInput   = document.getElementById("guestName");
-  const fileInput   = document.getElementById("fileInput");
-  const fileArea    = document.getElementById("fileArea");
-  const fileCount   = document.getElementById("fileCount");
-  const uploadBtn   = document.getElementById("uploadBtn");
+  const CHUNK_SIZE = 3 * 1024 * 1024; // 3 MB — Vercel body limit altında kalır
+
+  const nameInput    = document.getElementById("guestName");
+  const fileInput    = document.getElementById("fileInput");
+  const fileCount    = document.getElementById("fileCount");
+  const uploadBtn    = document.getElementById("uploadBtn");
   const progressWrap = document.getElementById("progressWrap");
   const progressFile = document.getElementById("progressFile");
   const progressPct  = document.getElementById("progressPct");
   const progressBar  = document.getElementById("progressBar");
-  const statusMsg   = document.getElementById("statusMsg");
-
-  function updateBtn() {
-    uploadBtn.disabled = fileInput.files.length === 0;
-  }
+  const statusMsg    = document.getElementById("statusMsg");
 
   fileInput.addEventListener("change", () => {
     const n = fileInput.files.length;
     fileCount.textContent = n ? `${n} dosya seçildi` : "";
-    updateBtn();
+    uploadBtn.disabled = n === 0;
   });
+
+  function setProgress(label, pct) {
+    progressFile.textContent = label;
+    progressPct.textContent  = Math.round(pct) + "%";
+    progressBar.style.width  = pct + "%";
+  }
 
   function showStatus(type, text) {
     statusMsg.className = "status " + type;
@@ -214,72 +155,69 @@
     statusMsg.style.display = "block";
   }
 
-  function setProgress(fileName, pct) {
-    progressFile.textContent = fileName;
-    progressPct.textContent  = Math.round(pct) + "%";
-    progressBar.style.width  = pct + "%";
-  }
+  async function uploadFile(file, guestName, fileIndex, totalFiles) {
+    const total = file.size;
+    let uploaded = 0;
+    let sessionB64 = "";   // base64-encoded Drive session URL
+    let driveFileName = ""; // final name assigned by server
 
-  async function uploadFile(file, guestName) {
-    // 1) Ask the server to open a Drive resumable session
-    const initRes = await fetch("/api/init-upload", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        guestName:    guestName,
-        originalName: file.name,
-        mimeType:     file.type || "application/octet-stream",
-      }),
-    });
+    while (uploaded < total) {
+      const end   = Math.min(uploaded + CHUNK_SIZE, total);
+      const chunk = file.slice(uploaded, end);
 
-    if (!initRes.ok) {
-      const { error } = await initRes.json().catch(() => ({}));
-      throw new Error(error || "Sunucu hatası");
+      const label = totalFiles > 1
+        ? `${file.name} (${fileIndex + 1}/${totalFiles})`
+        : file.name;
+      setProgress(label, (uploaded / total) * 100);
+
+      const headers = {
+        "Content-Type":      "application/octet-stream",
+        "X-Guest-Name":      encodeURIComponent(guestName),
+        "X-File-Name":       encodeURIComponent(file.name),
+        "X-File-Type":       file.type || "application/octet-stream",
+        "X-Content-Range":   `bytes ${uploaded}-${end - 1}/${total}`,
+      };
+
+      if (sessionB64)    headers["X-Drive-Session"]   = sessionB64;
+      if (driveFileName) headers["X-Drive-Filename"]  = encodeURIComponent(driveFileName);
+
+      const res = await fetch("/api/upload", { method: "POST", headers, body: chunk });
+
+      if (!res.ok) {
+        const body = await res.json().catch(() => ({}));
+        throw new Error(body.error || `Sunucu hatası: ${res.status}`);
+      }
+
+      const data = await res.json();
+
+      if (data.sessionUrl)  sessionB64    = data.sessionUrl;
+      if (data.fileName)    driveFileName = decodeURIComponent(data.fileName);
+
+      uploaded = end;
+
+      if (data.done) {
+        setProgress(label, 100);
+        break;
+      }
     }
-
-    const { sessionUrl } = await initRes.json();
-
-    // 2) PUT file bytes directly to Drive — NO Authorization, NO custom headers.
-    //    The session URL carries the auth. Keeping headers minimal avoids CORS preflight.
-    await new Promise((resolve, reject) => {
-      const xhr = new XMLHttpRequest();
-      xhr.open("PUT", sessionUrl);
-      xhr.setRequestHeader("Content-Type", file.type || "application/octet-stream");
-
-      xhr.upload.onprogress = (e) => {
-        if (e.lengthComputable) setProgress(file.name, (e.loaded / e.total) * 100);
-      };
-
-      xhr.onload = () => {
-        if (xhr.status >= 200 && xhr.status < 300) resolve();
-        else reject(new Error(`Drive yükleme hatası: ${xhr.status}`));
-      };
-
-      xhr.onerror = () => reject(new Error("Ağ hatası — internet bağlantınızı kontrol edin"));
-      xhr.send(file);
-    });
   }
 
   uploadBtn.addEventListener("click", async () => {
     const files     = Array.from(fileInput.files);
     const guestName = nameInput.value.trim();
-
     if (!files.length) return;
 
     uploadBtn.disabled = true;
-    statusMsg.style.display  = "none";
+    statusMsg.style.display   = "none";
     progressWrap.style.display = "block";
 
     let failed = 0;
 
     for (let i = 0; i < files.length; i++) {
-      const file = files[i];
-      setProgress(`${file.name} (${i + 1}/${files.length})`, 0);
       try {
-        await uploadFile(file, guestName);
-        setProgress(`${file.name} (${i + 1}/${files.length})`, 100);
+        await uploadFile(files[i], guestName, i, files.length);
       } catch (err) {
-        console.error(err);
+        console.error(files[i].name, err);
         failed++;
       }
     }
@@ -291,12 +229,12 @@
       fileInput.value = "";
       fileCount.textContent = "";
     } else if (failed < files.length) {
-      showStatus("error", `${files.length - failed} dosya yüklendi, ${failed} dosya başarısız oldu.`);
+      showStatus("error", `${files.length - failed} dosya yüklendi, ${failed} dosya başarısız.`);
     } else {
       showStatus("error", "Yükleme başarısız. Lütfen tekrar deneyin.");
     }
 
-    uploadBtn.disabled = false;
+    uploadBtn.disabled = fileInput.files.length === 0;
   });
 </script>
 </body>
