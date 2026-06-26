@@ -1,0 +1,8 @@
+{
+  "functions": {
+    "api/init-upload.js": {
+      "memory": 128,
+      "maxDuration": 10
+    }
+  }
+}

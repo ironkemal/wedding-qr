@@ -1,0 +1,11 @@
+{
+  "name": "wedding-photo-upload",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "get-token": "node scripts/get-refresh-token.js"
+  },
+  "dependencies": {
+    "googleapis": "^144.0.0"
+  }
+}
