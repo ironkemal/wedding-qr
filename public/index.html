@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Düğün Fotoğrafları</title>
+  <title>Betül & Kemal 💍</title>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -11,42 +11,122 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background: #fdf8f2;
       min-height: 100dvh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
     }
 
+    /* ── Language select overlay ───────────────────────────────── */
+    #langScreen {
+      position: fixed; inset: 0; z-index: 100;
+      background: linear-gradient(160deg, #fdf3e3 0%, #fdf8f2 60%, #f5ece2 100%);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      padding: 2rem;
+      gap: 2rem;
+    }
+    #langScreen.hidden { display: none; }
+
+    .lang-rings {
+      font-size: 3rem;
+      animation: float 3s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50%       { transform: translateY(-8px); }
+    }
+
+    .lang-title {
+      font-size: 1.5rem; font-weight: 700; color: #3a2c1e;
+      text-align: center; line-height: 1.4;
+    }
+    .lang-sub {
+      font-size: 0.95rem; color: #9a7c5f; text-align: center;
+      margin-top: -1rem;
+    }
+
+    .lang-btns {
+      display: flex; flex-direction: column; gap: 0.85rem; width: 100%; max-width: 280px;
+    }
+    .lang-btn {
+      padding: 0.95rem 1.5rem;
+      background: #fff;
+      border: 2px solid #e8d8c4;
+      border-radius: 1rem;
+      font-size: 1.05rem; font-weight: 600; color: #3a2c1e;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 0.75rem;
+      transition: border-color 0.2s, background 0.2s, transform 0.1s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .lang-btn:hover  { border-color: #c9a96e; background: #fdf3e3; transform: translateY(-1px); }
+    .lang-btn:active { transform: translateY(0); }
+    .lang-btn .flag  { font-size: 1.4rem; }
+
+    /* ── Main app ──────────────────────────────────────────────── */
+    #app {
+      min-height: 100dvh;
+      display: flex; flex-direction: column;
+      align-items: center;
+      padding: 1.25rem 1rem 2.5rem;
+    }
+    #app.hidden { display: none; }
+
+    /* Language switcher bar */
+    .lang-switcher {
+      display: flex; gap: 0.4rem;
+      align-self: flex-end;
+      margin-bottom: 1rem;
+    }
+    .ls-btn {
+      padding: 0.3rem 0.65rem;
+      border: 1.5px solid #e0d8cc;
+      border-radius: 0.5rem;
+      background: #fff;
+      font-size: 0.75rem; font-weight: 700; color: #9a7c5f;
+      cursor: pointer; transition: all 0.15s;
+    }
+    .ls-btn:hover        { border-color: #c9a96e; color: #c9a96e; }
+    .ls-btn.active       { background: #c9a96e; border-color: #c9a96e; color: #fff; }
+
+    /* Card */
     .card {
       background: #fff;
-      border-radius: 1.25rem;
-      padding: 2rem 1.5rem;
-      width: 100%;
-      max-width: 420px;
-      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      border-radius: 1.5rem;
+      padding: 2rem 1.5rem 1.75rem;
+      width: 100%; max-width: 440px;
+      box-shadow: 0 4px 28px rgba(0,0,0,0.08);
     }
 
-    h1 { font-size: 1.4rem; font-weight: 700; color: #1a1a1a; margin-bottom: 0.25rem; }
-    .subtitle { font-size: 0.9rem; color: #888; margin-bottom: 1.75rem; }
+    .card-header { margin-bottom: 1.75rem; }
+    .card-welcome {
+      font-size: 1.15rem; font-weight: 700; color: #3a2c1e;
+      line-height: 1.4; margin-bottom: 0.35rem;
+    }
+    .card-subtitle { font-size: 0.875rem; color: #9a7c5f; }
 
-    label { display: block; font-size: 0.85rem; font-weight: 600; color: #444; margin-bottom: 0.4rem; }
+    label { display: block; font-size: 0.82rem; font-weight: 600; color: #6b5040; margin-bottom: 0.4rem; }
 
     input[type="text"] {
       width: 100%;
       padding: 0.75rem 1rem;
-      border: 1.5px solid #e0e0e0;
-      border-radius: 0.75rem;
-      font-size: 1rem;
-      color: #1a1a1a;
-      outline: none;
-      transition: border-color 0.2s;
+      border: 1.5px solid #e8d8c4;
+      border-radius: 0.85rem;
+      font-size: 1rem; color: #3a2c1e;
+      outline: none; transition: border-color 0.2s;
       margin-bottom: 1.25rem;
+      background: #fdfaf7;
     }
-    input[type="text"]:focus { border-color: #c9a96e; }
+    input[type="text"]:focus { border-color: #c9a96e; background: #fff; }
+    input[type="text"].invalid { border-color: #e57373; }
+
+    .name-err {
+      font-size: 0.8rem; color: #c62828;
+      margin-top: -1rem; margin-bottom: 0.85rem;
+      display: none;
+    }
+    .name-err.visible { display: block; }
 
     .file-area {
-      border: 2px dashed #e0d8cc;
-      border-radius: 0.75rem;
+      border: 2px dashed #e8d8c4;
+      border-radius: 0.85rem;
       padding: 1.5rem 1rem;
       text-align: center;
       cursor: pointer;
@@ -54,188 +134,367 @@
       margin-bottom: 1.25rem;
       position: relative;
     }
-    .file-area:hover, .file-area.active { border-color: #c9a96e; background: #fdf3e3; }
+    .file-area:hover  { border-color: #c9a96e; background: #fdf3e3; }
     .file-area input[type="file"] {
       position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
     }
-    .file-icon { font-size: 2rem; margin-bottom: 0.5rem; }
-    .file-hint { font-size: 0.85rem; color: #999; }
-    .file-count { font-size: 0.9rem; font-weight: 600; color: #c9a96e; margin-top: 0.4rem; }
+    .file-icon  { font-size: 1.8rem; margin-bottom: 0.45rem; }
+    .file-hint  { font-size: 0.85rem; color: #b0967c; }
+    .file-hintsub { font-size: 0.78rem; color: #c4ad98; margin-top: 0.2rem; }
+    .file-count { font-size: 0.88rem; font-weight: 600; color: #c9a96e; margin-top: 0.5rem; }
 
-    button {
+    .upload-btn {
       width: 100%;
-      padding: 0.9rem;
-      background: #c9a96e;
+      padding: 0.95rem;
+      background: linear-gradient(135deg, #c9a96e, #b8924f);
       color: #fff;
-      border: none;
-      border-radius: 0.75rem;
-      font-size: 1rem;
-      font-weight: 700;
+      border: none; border-radius: 0.85rem;
+      font-size: 1rem; font-weight: 700;
       cursor: pointer;
-      transition: background 0.2s, opacity 0.2s;
+      transition: opacity 0.2s, transform 0.1s;
+      box-shadow: 0 3px 12px rgba(185,146,79,0.35);
+      letter-spacing: 0.02em;
     }
-    button:hover:not(:disabled) { background: #b8924f; }
-    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .upload-btn:hover:not(:disabled)  { opacity: 0.92; transform: translateY(-1px); }
+    .upload-btn:active:not(:disabled) { transform: translateY(0); }
+    .upload-btn:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
 
     .progress-wrap { margin-top: 1.25rem; display: none; }
     .progress-label {
       display: flex; justify-content: space-between;
-      font-size: 0.8rem; color: #666; margin-bottom: 0.4rem;
+      font-size: 0.8rem; color: #9a7c5f; margin-bottom: 0.45rem;
     }
-    .progress-bar-bg { background: #f0e8dc; border-radius: 999px; height: 10px; overflow: hidden; }
-    .progress-bar { height: 100%; background: #c9a96e; border-radius: 999px; width: 0%; transition: width 0.2s; }
+    .progress-bar-bg  { background: #f0e4d4; border-radius: 999px; height: 9px; overflow: hidden; }
+    .progress-bar     { height: 100%; background: linear-gradient(90deg, #c9a96e, #e0b87a); border-radius: 999px; width: 0%; transition: width 0.25s; }
 
     .status {
-      margin-top: 1.25rem; padding: 0.9rem 1rem; border-radius: 0.75rem;
-      font-size: 0.9rem; font-weight: 600; text-align: center; display: none;
+      margin-top: 1.25rem; padding: 1rem 1.1rem;
+      border-radius: 0.85rem; font-size: 0.9rem; font-weight: 600;
+      text-align: center; display: none; line-height: 1.5;
     }
-    .status.success { background: #e8f5e9; color: #2e7d32; }
-    .status.error   { background: #fdecea; color: #c62828; }
+    .status.success { background: #f0faf0; color: #2e7d32; border: 1px solid #c8e6c9; }
+    .status.error   { background: #fdecea; color: #c62828; border: 1px solid #ffcdd2; }
+
+    /* Trust note */
+    .trust-note {
+      margin-top: 1.5rem;
+      padding: 1rem 1.1rem;
+      background: #fdf8f2;
+      border: 1px solid #e8d8c4;
+      border-radius: 0.85rem;
+      font-size: 0.8rem; color: #9a7c5f;
+      line-height: 1.6; text-align: center;
+    }
+
+    /* Divider */
+    .divider {
+      border: none; border-top: 1px solid #f0e4d4;
+      margin: 1.25rem 0 1.1rem;
+    }
   </style>
 </head>
 <body>
-<div class="card">
-  <h1>📸 Fotoğraf Yükle</h1>
-  <p class="subtitle">Çektiğiniz fotoğraf ve videoları bizimle paylaşın</p>
 
-  <label for="guestName">Adınız</label>
-  <input type="text" id="guestName" placeholder="Ahmet Yılmaz" autocomplete="name" />
+<!-- ── Language selection screen ─────────────────────────── -->
+<div id="langScreen">
+  <div class="lang-rings">💍</div>
+  <div>
+    <div class="lang-title">Betül & Kemal</div>
+    <div class="lang-sub" style="margin-top:0.4rem">Please choose your language · Sprache wählen</div>
+  </div>
+  <div class="lang-btns">
+    <button class="lang-btn" onclick="selectLang('tr')">
+      <span class="flag">🇹🇷</span> Türkçe
+    </button>
+    <button class="lang-btn" onclick="selectLang('en')">
+      <span class="flag">🇬🇧</span> English
+    </button>
+    <button class="lang-btn" onclick="selectLang('de')">
+      <span class="flag">🇩🇪</span> Deutsch
+    </button>
+  </div>
+</div>
 
-  <label>Fotoğraf / Video</label>
-  <div class="file-area" id="fileArea">
-    <input type="file" id="fileInput" accept="image/*,video/*" multiple />
-    <div class="file-icon">🖼️</div>
-    <div class="file-hint">Buraya dokunarak fotoğraf veya video seç<br><small>Birden fazla seçebilirsiniz</small></div>
-    <div class="file-count" id="fileCount"></div>
+<!-- ── Main app ───────────────────────────────────────────── -->
+<div id="app" class="hidden">
+  <div class="lang-switcher">
+    <button class="ls-btn" data-lang="tr" onclick="selectLang('tr')">TR</button>
+    <button class="ls-btn" data-lang="en" onclick="selectLang('en')">EN</button>
+    <button class="ls-btn" data-lang="de" onclick="selectLang('de')">DE</button>
   </div>
 
-  <button id="uploadBtn" disabled>Yükle</button>
+  <div class="card">
+    <div class="card-header">
+      <div class="card-welcome" id="txtWelcome"></div>
+      <div class="card-subtitle" id="txtSubtitle"></div>
+    </div>
 
-  <div class="progress-wrap" id="progressWrap">
-    <div class="progress-label">
-      <span id="progressFile">Yükleniyor…</span>
-      <span id="progressPct">0%</span>
+    <label id="lblName" for="guestName"></label>
+    <input type="text" id="guestName" autocomplete="name" />
+    <div class="name-err" id="nameErr"></div>
+
+    <label id="lblFile" for="fileInput"></label>
+    <div class="file-area" id="fileArea">
+      <input type="file" id="fileInput" accept="image/*,video/*" multiple />
+      <div class="file-icon">🖼️</div>
+      <div class="file-hint" id="txtFileHint"></div>
+      <div class="file-hintsub" id="txtFileHintSub"></div>
+      <div class="file-count" id="fileCount"></div>
     </div>
-    <div class="progress-bar-bg">
-      <div class="progress-bar" id="progressBar"></div>
+
+    <button class="upload-btn" id="uploadBtn" disabled></button>
+
+    <div class="progress-wrap" id="progressWrap">
+      <div class="progress-label">
+        <span id="progressFile"></span>
+        <span id="progressPct">0%</span>
+      </div>
+      <div class="progress-bar-bg"><div class="progress-bar" id="progressBar"></div></div>
     </div>
+
+    <div class="status" id="statusMsg"></div>
+
+    <hr class="divider" />
+    <div class="trust-note" id="txtTrustNote"></div>
   </div>
-
-  <div class="status" id="statusMsg"></div>
 </div>
 
 <script>
-  const CHUNK_SIZE = 3 * 1024 * 1024; // 3 MB — Vercel body limit altında kalır
+// ── i18n dictionary ──────────────────────────────────────────────
+const T = {
+  tr: {
+    welcome:      "Betül & Kemal'in düğününe hoş geldiniz 💍",
+    subtitle:     "Çektiğiniz fotoğraf ve videoları bizimle paylaşın",
+    lblName:      "Adınız *",
+    placeholder:  "Sinan, Ömer, Ahmet, Murat…",
+    lblFile:      "Fotoğraf / Video",
+    fileHint:     "Buraya dokunarak fotoğraf veya video seç",
+    fileHintSub:  "Birden fazla seçebilirsiniz",
+    uploadBtn:    "Yükle",
+    uploading:    "Yükleniyor…",
+    filesSelected: (n) => `${n} dosya seçildi`,
+    success:      (n) => `✓ ${n} dosya yüklendi! Teşekkürler 🎉`,
+    partial:      (ok, fail) => `${ok} dosya yüklendi, ${fail} dosya başarısız oldu.`,
+    error:        "Yükleme başarısız. Lütfen tekrar deneyin.",
+    nameRequired: "Lütfen adınızı giriniz.",
+    trustNote:    "💌 Bu uygulama Kemal Demir tarafından geliştirilmiştir. Yüklediğiniz tüm fotoğraf ve videolar doğrudan çiftin kendisine ulaşır — araya hiçbir üçüncü taraf girmez. İçiniz rahat olsun, anılarınızı gönül rahatlığıyla paylaşabilirsiniz 🤍",
+  },
+  en: {
+    welcome:      "Welcome to Betül & Kemal's wedding 💍",
+    subtitle:     "Share your photos and videos with us",
+    lblName:      "Your name *",
+    placeholder:  "John, Emily, Michael, Sarah…",
+    lblFile:      "Photos / Videos",
+    fileHint:     "Tap here to select photos or videos",
+    fileHintSub:  "You can select multiple files",
+    uploadBtn:    "Upload",
+    uploading:    "Uploading…",
+    filesSelected: (n) => `${n} file(s) selected`,
+    success:      (n) => `✓ ${n} file(s) uploaded! Thank you 🎉`,
+    partial:      (ok, fail) => `${ok} file(s) uploaded, ${fail} failed.`,
+    error:        "Upload failed. Please try again.",
+    nameRequired: "Please enter your name.",
+    trustNote:    "💌 This app was created by Kemal Demir. All the photos and videos you upload go directly to the couple — no third party is involved. Rest assured and share your memories with peace of mind 🤍",
+  },
+  de: {
+    welcome:      "Willkommen zur Hochzeit von Betül & Kemal 💍",
+    subtitle:     "Teile deine Fotos und Videos mit uns",
+    lblName:      "Dein Name *",
+    placeholder:  "Gregory, Alex, Sido, Marian…",
+    lblFile:      "Fotos / Videos",
+    fileHint:     "Tippe hier, um Fotos oder Videos auszuwählen",
+    fileHintSub:  "Du kannst mehrere Dateien auswählen",
+    uploadBtn:    "Hochladen",
+    uploading:    "Wird hochgeladen…",
+    filesSelected: (n) => `${n} Datei(en) ausgewählt`,
+    success:      (n) => `✓ ${n} Datei(en) hochgeladen! Danke 🎉`,
+    partial:      (ok, fail) => `${ok} hochgeladen, ${fail} fehlgeschlagen.`,
+    error:        "Hochladen fehlgeschlagen. Bitte erneut versuchen.",
+    nameRequired: "Bitte gib deinen Namen ein.",
+    trustNote:    "💌 Diese App wurde von Kemal Demir entwickelt. Alle Fotos und Videos, die du hochlädst, gehen direkt an das Brautpaar — keine dritte Partei ist beteiligt. Du kannst deine Erinnerungen ganz beruhigt teilen 🤍",
+  },
+};
 
-  const nameInput    = document.getElementById("guestName");
-  const fileInput    = document.getElementById("fileInput");
-  const fileCount    = document.getElementById("fileCount");
-  const uploadBtn    = document.getElementById("uploadBtn");
-  const progressWrap = document.getElementById("progressWrap");
-  const progressFile = document.getElementById("progressFile");
-  const progressPct  = document.getElementById("progressPct");
-  const progressBar  = document.getElementById("progressBar");
-  const statusMsg    = document.getElementById("statusMsg");
+// ── Language logic ───────────────────────────────────────────────
+let lang = localStorage.getItem("weddingLang") || null;
 
-  fileInput.addEventListener("change", () => {
-    const n = fileInput.files.length;
-    fileCount.textContent = n ? `${n} dosya seçildi` : "";
-    uploadBtn.disabled = n === 0;
+function selectLang(l) {
+  lang = l;
+  localStorage.setItem("weddingLang", l);
+  applyLang();
+  document.getElementById("langScreen").classList.add("hidden");
+  document.getElementById("app").classList.remove("hidden");
+}
+
+function applyLang() {
+  const t = T[lang];
+  document.documentElement.lang = lang;
+
+  document.getElementById("txtWelcome").textContent    = t.welcome;
+  document.getElementById("txtSubtitle").textContent   = t.subtitle;
+  document.getElementById("lblName").textContent       = t.lblName;
+  document.getElementById("guestName").placeholder     = t.placeholder;
+  document.getElementById("lblFile").textContent       = t.lblFile;
+  document.getElementById("txtFileHint").textContent   = t.fileHint;
+  document.getElementById("txtFileHintSub").textContent = t.fileHintSub;
+  document.getElementById("uploadBtn").textContent     = t.uploadBtn;
+  document.getElementById("txtTrustNote").textContent  = t.trustNote;
+
+  // Update file count label if files are selected
+  const n = document.getElementById("fileInput").files.length;
+  document.getElementById("fileCount").textContent = n ? t.filesSelected(n) : "";
+
+  // Update active switcher button
+  document.querySelectorAll(".ls-btn").forEach(btn => {
+    btn.classList.toggle("active", btn.dataset.lang === lang);
   });
 
-  function setProgress(label, pct) {
-    progressFile.textContent = label;
-    progressPct.textContent  = Math.round(pct) + "%";
-    progressBar.style.width  = pct + "%";
+  // Re-hide status if no upload happened
+  const sm = document.getElementById("statusMsg");
+  if (sm.style.display !== "none" && sm.dataset.type) {
+    // re-render existing status in new language
+    const type = sm.dataset.type;
+    if (type === "success") sm.textContent = t.success(parseInt(sm.dataset.count));
+    if (type === "partial") sm.textContent = t.partial(parseInt(sm.dataset.ok), parseInt(sm.dataset.fail));
+    if (type === "error")   sm.textContent = t.error;
+  }
+}
+
+// Boot: skip lang screen if preference already saved
+if (lang && T[lang]) {
+  document.getElementById("langScreen").classList.add("hidden");
+  document.getElementById("app").classList.remove("hidden");
+  applyLang();
+}
+
+// ── Upload logic (unchanged) ─────────────────────────────────────
+const CHUNK_SIZE = 3 * 1024 * 1024;
+
+const nameInput    = document.getElementById("guestName");
+const fileInput    = document.getElementById("fileInput");
+const fileCount    = document.getElementById("fileCount");
+const uploadBtn    = document.getElementById("uploadBtn");
+const progressWrap = document.getElementById("progressWrap");
+const progressFile = document.getElementById("progressFile");
+const progressPct  = document.getElementById("progressPct");
+const progressBar  = document.getElementById("progressBar");
+const statusMsg    = document.getElementById("statusMsg");
+const nameErr      = document.getElementById("nameErr");
+
+fileInput.addEventListener("change", () => {
+  const n = fileInput.files.length;
+  fileCount.textContent = n ? T[lang].filesSelected(n) : "";
+  uploadBtn.disabled = n === 0;
+});
+
+nameInput.addEventListener("input", () => {
+  nameInput.classList.remove("invalid");
+  nameErr.classList.remove("visible");
+});
+
+function setProgress(label, pct) {
+  progressFile.textContent = label;
+  progressPct.textContent  = Math.round(pct) + "%";
+  progressBar.style.width  = pct + "%";
+}
+
+function showStatus(type, text, meta = {}) {
+  statusMsg.className = "status " + type;
+  statusMsg.textContent = text;
+  statusMsg.style.display = "block";
+  statusMsg.dataset.type  = type;
+  Object.assign(statusMsg.dataset, meta);
+}
+
+async function uploadFile(file, guestName, fileIndex, totalFiles) {
+  const total = file.size;
+  let uploaded = 0;
+  let sessionB64 = "";
+  let driveFileName = "";
+
+  while (uploaded < total) {
+    const end   = Math.min(uploaded + CHUNK_SIZE, total);
+    const chunk = file.slice(uploaded, end);
+
+    const label = totalFiles > 1
+      ? `${file.name} (${fileIndex + 1}/${totalFiles})`
+      : file.name;
+    setProgress(label, (uploaded / total) * 100);
+
+    const headers = {
+      "Content-Type":    "application/octet-stream",
+      "X-Guest-Name":    encodeURIComponent(guestName),
+      "X-File-Name":     encodeURIComponent(file.name),
+      "X-File-Type":     file.type || "application/octet-stream",
+      "X-Content-Range": `bytes ${uploaded}-${end - 1}/${total}`,
+    };
+    if (sessionB64)    headers["X-Drive-Session"]  = sessionB64;
+    if (driveFileName) headers["X-Drive-Filename"] = encodeURIComponent(driveFileName);
+
+    const res = await fetch("/api/upload", { method: "POST", headers, body: chunk });
+
+    if (!res.ok) {
+      const body = await res.json().catch(() => ({}));
+      throw new Error(body.error || `Sunucu hatası: ${res.status}`);
+    }
+
+    const data = await res.json();
+    if (data.sessionUrl)  sessionB64    = data.sessionUrl;
+    if (data.fileName)    driveFileName = decodeURIComponent(data.fileName);
+    uploaded = end;
+
+    if (data.done) { setProgress(label, 100); break; }
+  }
+}
+
+uploadBtn.addEventListener("click", async () => {
+  const files     = Array.from(fileInput.files);
+  const guestName = nameInput.value.trim();
+
+  // Name required
+  if (!guestName) {
+    nameInput.classList.add("invalid");
+    nameErr.textContent = T[lang].nameRequired;
+    nameErr.classList.add("visible");
+    nameInput.focus();
+    return;
   }
 
-  function showStatus(type, text) {
-    statusMsg.className = "status " + type;
-    statusMsg.textContent = text;
-    statusMsg.style.display = "block";
-  }
+  if (!files.length) return;
 
-  async function uploadFile(file, guestName, fileIndex, totalFiles) {
-    const total = file.size;
-    let uploaded = 0;
-    let sessionB64 = "";   // base64-encoded Drive session URL
-    let driveFileName = ""; // final name assigned by server
+  uploadBtn.disabled          = true;
+  statusMsg.style.display     = "none";
+  statusMsg.dataset.type      = "";
+  progressWrap.style.display  = "block";
+  nameInput.classList.remove("invalid");
+  nameErr.classList.remove("visible");
 
-    while (uploaded < total) {
-      const end   = Math.min(uploaded + CHUNK_SIZE, total);
-      const chunk = file.slice(uploaded, end);
-
-      const label = totalFiles > 1
-        ? `${file.name} (${fileIndex + 1}/${totalFiles})`
-        : file.name;
-      setProgress(label, (uploaded / total) * 100);
-
-      const headers = {
-        "Content-Type":      "application/octet-stream",
-        "X-Guest-Name":      encodeURIComponent(guestName),
-        "X-File-Name":       encodeURIComponent(file.name),
-        "X-File-Type":       file.type || "application/octet-stream",
-        "X-Content-Range":   `bytes ${uploaded}-${end - 1}/${total}`,
-      };
-
-      if (sessionB64)    headers["X-Drive-Session"]   = sessionB64;
-      if (driveFileName) headers["X-Drive-Filename"]  = encodeURIComponent(driveFileName);
-
-      const res = await fetch("/api/upload", { method: "POST", headers, body: chunk });
-
-      if (!res.ok) {
-        const body = await res.json().catch(() => ({}));
-        throw new Error(body.error || `Sunucu hatası: ${res.status}`);
-      }
-
-      const data = await res.json();
-
-      if (data.sessionUrl)  sessionB64    = data.sessionUrl;
-      if (data.fileName)    driveFileName = decodeURIComponent(data.fileName);
-
-      uploaded = end;
-
-      if (data.done) {
-        setProgress(label, 100);
-        break;
-      }
+  let failed = 0;
+  for (let i = 0; i < files.length; i++) {
+    try {
+      await uploadFile(files[i], guestName, i, files.length);
+    } catch (err) {
+      console.error(files[i].name, err);
+      failed++;
     }
   }
 
-  uploadBtn.addEventListener("click", async () => {
-    const files     = Array.from(fileInput.files);
-    const guestName = nameInput.value.trim();
-    if (!files.length) return;
+  progressWrap.style.display = "none";
+  const t = T[lang];
 
-    uploadBtn.disabled = true;
-    statusMsg.style.display   = "none";
-    progressWrap.style.display = "block";
+  if (failed === 0) {
+    showStatus("success", t.success(files.length), { count: files.length });
+    fileInput.value = "";
+    fileCount.textContent = "";
+  } else if (failed < files.length) {
+    const ok = files.length - failed;
+    showStatus("partial", t.partial(ok, failed), { ok, fail: failed });
+  } else {
+    showStatus("error", t.error);
+  }
 
-    let failed = 0;
-
-    for (let i = 0; i < files.length; i++) {
-      try {
-        await uploadFile(files[i], guestName, i, files.length);
-      } catch (err) {
-        console.error(files[i].name, err);
-        failed++;
-      }
-    }
-
-    progressWrap.style.display = "none";
-
-    if (failed === 0) {
-      showStatus("success", `✓ ${files.length} dosya yüklendi! Teşekkürler 🎉`);
-      fileInput.value = "";
-      fileCount.textContent = "";
-    } else if (failed < files.length) {
-      showStatus("error", `${files.length - failed} dosya yüklendi, ${failed} dosya başarısız.`);
-    } else {
-      showStatus("error", "Yükleme başarısız. Lütfen tekrar deneyin.");
-    }
-
-    uploadBtn.disabled = fileInput.files.length === 0;
-  });
+  uploadBtn.disabled = fileInput.files.length === 0;
+});
 </script>
 </body>
 </html>
